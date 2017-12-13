@@ -116,8 +116,8 @@ class launchBtn(QtGui.QPushButton) :
     ## @decorateur_try_except
     def launchFromContext(self,  entityId):
 
-        appLauncher = self.SGTK_ENGINE.apps[self.launchApp]
-        
+        app = self.SGTK_ENGINE.apps[self.launchApp]
+        path = ""
 
         tk_i = sgtk.tank_from_entity( "Task" , entityId)
         context = tk_i.context_from_entity("Task" , self.sgTaskDict['id'] )
@@ -127,15 +127,13 @@ class launchBtn(QtGui.QPushButton) :
             print "TASK " , context.task
         except :
             pass
-        appLauncher._launch_app(context, version= self.version )
+        app.launch_from_path_and_context(path , context, version= self.version )
     
     ## @decorateur_try_except
     def launchFromPath(self,  path):
         #path = "//sledge/vol1/Projects/EventTrackingProject/Compositing/Setups/Nuke/EV001/Comp/work/EV001_comp_v004.nk"
 
-
         app =self.SGTK_ENGINE.apps[self.launchApp]
- 
         
         tk_i = sgtk.tank_from_path( path)
         context = tk_i.context_from_entity("Task" , self.sgTaskDict['id'] )
@@ -148,10 +146,13 @@ class launchBtn(QtGui.QPushButton) :
             print "USER " , context.user
         except :
             pass
-        print self.launchApp, "launch ->", context , path 
+        print self.launchApp, "launch ->", context , path, self.version
 
-        #app._launch_app(context, version= self.version )
-        app._launch_app(   context, file_to_open= path, version=self.version) 
+        ## app._launch_app(context, version= self.version )
+        # app._launch_app(   context, file_to_open= path, version=self.version) 
+
+        app.launch_from_path(path, version = self.version)
+
 
 
 
