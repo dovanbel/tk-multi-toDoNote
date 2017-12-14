@@ -83,11 +83,11 @@ class launchBtn(QtGui.QPushButton) :
     def setClickAction(self, p = None ):
         if self.values["files"][0]  :
             path = self.values["files"][0][0]
-            fct = lambda: self.launchFromPath( path )
+            fct = lambda: self.launchFromPathAndContext( path )
         elif self.values["files"][1].keys() :
             keyName = self.values["files"][1].keys()[0]
             path = self.values["files"][1][keyName][0]
-            fct = lambda: self.launchFromPath( path )
+            fct = lambda: self.launchFromPathAndContext( path )
         else :
             ctx = self.values["files"][2]
             fct = lambda: self.launchFromContext( ctx )
@@ -99,13 +99,13 @@ class launchBtn(QtGui.QPushButton) :
 
         fileMenu =  QtGui.QMenu()
         for a in self.values["files"][0]:
-            fct = lambda a = a : self.launchFromPath( a )
+            fct = lambda a = a : self.launchFromPathAndContext( a )
             fileMenu.addAction(os.path.basename(a), fct )
         
         for m, files in self.values["files"][1].iteritems() :
             fileNameMenu =  fileMenu.addMenu( m )
             for path in files :
-                fct = lambda path = path : self.launchFromPath( path )
+                fct = lambda path = path : self.launchFromPathAndContext( path )
                 fileNameMenu.addAction(os.path.basename(path), fct )
         
         path = self.values["files"][2]
@@ -130,7 +130,7 @@ class launchBtn(QtGui.QPushButton) :
         app.launch_from_path_and_context(path , context, version= self.version )
     
     ## @decorateur_try_except
-    def launchFromPath(self,  path):
+    def launchFromPathAndContext(self,  path):
         #path = "//sledge/vol1/Projects/EventTrackingProject/Compositing/Setups/Nuke/EV001/Comp/work/EV001_comp_v004.nk"
 
         app =self.SGTK_ENGINE.apps[self.launchApp]
@@ -151,7 +151,7 @@ class launchBtn(QtGui.QPushButton) :
         ## app._launch_app(context, version= self.version )
         # app._launch_app(   context, file_to_open= path, version=self.version) 
 
-        app.launch_from_path(path, version = self.version)
+        app.launch_from_path_and_context(path , context, version= self.version )
 
 
 
